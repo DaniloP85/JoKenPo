@@ -11,8 +11,8 @@ import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var androidScore: Int = 0
-    private var playerScore: Int = 0
+    private var pontuacaoAndroid: Int = 0
+    private var pontuacaoJogador: Int = 0
     private var pedra: String = "pedra"
     private var tesoura: String = "tesoura"
     private var papel: String = "papel"
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.tvPlacarAndroid.text = androidScore.toString()
-        binding.tvPlacarVc.text = playerScore.toString()
+        binding.tvPlacarAndroid.text = pontuacaoAndroid.toString()
+        binding.tvPlacarVc.text = pontuacaoJogador.toString()
 
         binding.papel.setOnClickListener {
             realizarJogada(papel)
@@ -41,11 +41,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun realizarJogada(jogadaUsuario: String) {
         val jogadaAdversario = Random().nextInt(3)
-        val arr = arrayOf(pedra, tesoura, papel)
+        val array = arrayOf(pedra, tesoura, papel)
 
         configuraImagemDaJogada(jogadaUsuario, binding.ivVoce)
-        configuraImagemDaJogada(arr[jogadaAdversario], binding.ivAndroid)
-        binding.tvResultado.text = definiGanhador(jogadaUsuario, arr[jogadaAdversario])
+        configuraImagemDaJogada(array[jogadaAdversario], binding.ivAndroid)
+        val resultado = Resultado.quemGanhou(jogadaUsuario, array[jogadaAdversario])
+        when (resultado){
+            "Você ganhou" -> {
+                pontuacaoJogador += 1
+                atualizaPontuacao(pontuacaoJogador, binding.tvPlacarVc)
+            }
+            "Android ganhou" -> {
+                pontuacaoAndroid += 1
+                atualizaPontuacao(pontuacaoAndroid, binding.tvPlacarAndroid)
+            }
+        }
+
+        binding.tvResultado.text = resultado
     }
 
     private fun configuraImagemDaJogada(jogada: String, imageView: ImageView) {
@@ -60,35 +72,7 @@ class MainActivity : AppCompatActivity() {
         imageView.setImageDrawable(ContextCompat.getDrawable(this, resourceID))
     }
 
-    private fun updateScore(score: Int, element: TextView){
-        element.text = score.toString()
-    }
-
-    private fun definiGanhador(jogador: String, android :String) :String {
-        if (jogador == android){
-            return "Empate"
-        }
-
-        if (jogador == pedra && android == tesoura){
-            playerScore += 1
-            updateScore(playerScore, binding.tvPlacarVc)
-            return "Você ganhou"
-        }
-
-        if (jogador == papel && android == pedra){
-            playerScore += 1
-            updateScore(playerScore, binding.tvPlacarVc)
-            return "Você ganhou"
-        }
-
-        if (jogador == tesoura && android == papel){
-            playerScore += 1
-            updateScore(playerScore, binding.tvPlacarVc)
-            return "Você ganhou"
-        }
-
-        androidScore += 1
-        updateScore(androidScore, binding.tvPlacarAndroid)
-        return "Android ganhou"
+    private fun atualizaPontuacao(pontuacao: Int, elmentoEmTela: TextView) {
+        elmentoEmTela.text = pontuacao.toString()
     }
 }
