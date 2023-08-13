@@ -11,8 +11,8 @@ import java.util.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var pontuacaoAndroid: Int = 0
-    private var pontuacaoJogador: Int = 0
+    private var android: Int = 0
+    private var jogador: Int = 0
     private var pedra: String = "pedra"
     private var tesoura: String = "tesoura"
     private var papel: String = "papel"
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        binding.tvPlacarAndroid.text = pontuacaoAndroid.toString()
-        binding.tvPlacarVc.text = pontuacaoJogador.toString()
+        binding.tvPlacarAndroid.text = android.toString()
+        binding.tvPlacarVc.text = jogador.toString()
 
         binding.papel.setOnClickListener {
             realizarJogada(papel)
@@ -39,21 +39,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun realizarJogada(jogadaUsuario: String) {
-        val jogadaAdversario = Random().nextInt(3)
+    private fun realizarJogada(jogada: String) {
+        val adversario = Random().nextInt(3)
         val array = arrayOf(pedra, tesoura, papel)
 
-        configuraImagemDaJogada(jogadaUsuario, binding.ivVoce)
-        configuraImagemDaJogada(array[jogadaAdversario], binding.ivAndroid)
-        val resultado = Resultado.quemGanhou(jogadaUsuario, array[jogadaAdversario])
+        configuraImagemDaJogada(jogada, binding.ivVoce)
+        configuraImagemDaJogada(array[adversario], binding.ivAndroid)
+        val resultado = Resultado.quemGanhou(jogada, array[adversario])
         when (resultado){
             "Você ganhou" -> {
-                pontuacaoJogador += 1
-                atualizaPontuacao(pontuacaoJogador, binding.tvPlacarVc)
+                jogador += 1
+                atualizaPontuacao(jogador, binding.tvPlacarVc)
             }
             "Android ganhou" -> {
-                pontuacaoAndroid += 1
-                atualizaPontuacao(pontuacaoAndroid, binding.tvPlacarAndroid)
+                android += 1
+                atualizaPontuacao(android, binding.tvPlacarAndroid)
             }
         }
 
