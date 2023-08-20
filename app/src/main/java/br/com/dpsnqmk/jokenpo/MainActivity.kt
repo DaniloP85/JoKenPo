@@ -2,6 +2,7 @@ package br.com.dpsnqmk.jokenpo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -25,32 +26,57 @@ class MainActivity : AppCompatActivity() {
 
         binding.tvPlacarAndroid.text = android.toString()
         binding.tvPlacarVc.text = jogador.toString()
+        val txtAndroid = binding.editTextAndroid.text
 
         binding.papel.setOnClickListener {
-            realizarJogada(papel)
+            if (txtAndroid.isNullOrBlank()) {
+                val adversario = Random().nextInt(3)
+                val array = arrayOf(pedra, tesoura, papel)
+                binding.editTextAndroid.visibility = View.INVISIBLE
+                binding.editTextAndroid.setText(array[adversario])
+                realizarJogada(papel)
+            } else {
+                realizarJogada(papel)
+            }
         }
 
         binding.pedra.setOnClickListener {
-            realizarJogada(pedra)
+            if (txtAndroid.isNullOrBlank()) {
+                val adversario = Random().nextInt(3)
+                val array = arrayOf(pedra, tesoura, papel)
+                binding.editTextAndroid.visibility = View.INVISIBLE
+                binding.editTextAndroid.setText(array[adversario])
+                realizarJogada(pedra)
+            } else {
+                realizarJogada(pedra)
+            }
         }
 
         binding.tesoura.setOnClickListener {
-            realizarJogada(tesoura)
+            if (txtAndroid.isNullOrBlank()) {
+                val adversario = Random().nextInt(3)
+                val array = arrayOf(pedra, tesoura, papel)
+                binding.editTextAndroid.visibility = View.INVISIBLE
+                binding.editTextAndroid.setText(array[adversario])
+                realizarJogada(tesoura)
+            } else {
+                realizarJogada(tesoura)
+            }
         }
     }
 
     private fun realizarJogada(jogada: String) {
-        val adversario = Random().nextInt(3)
-        val array = arrayOf(pedra, tesoura, papel)
+        val jogadaAndroid = binding.editTextAndroid.text
 
         configuraImagemDaJogada(jogada, binding.ivVoce)
-        configuraImagemDaJogada(array[adversario], binding.ivAndroid)
-        val resultado = Resultado.quemGanhou(jogada, array[adversario])
-        when (resultado){
+        configuraImagemDaJogada(jogadaAndroid.toString(), binding.ivAndroid)
+        val resultado = Resultado.quemGanhou(jogada, jogadaAndroid.toString())
+        when (resultado) {
             "Você ganhou" -> {
                 jogador += 1
                 atualizaPontuacao(jogador, binding.tvPlacarVc)
             }
+
             "Android ganhou" -> {
                 android += 1
                 atualizaPontuacao(android, binding.tvPlacarAndroid)
@@ -61,10 +87,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configuraImagemDaJogada(jogada: String, imageView: ImageView) {
-        when(jogada) {
-            pedra -> {configuraImagem(R.drawable.pedra, imageView)}
-            tesoura -> {configuraImagem(R.drawable.tesoura, imageView)}
-            papel -> {configuraImagem(R.drawable.papel, imageView)}
+        when (jogada) {
+            pedra -> {
+                configuraImagem(R.drawable.pedra, imageView)
+            }
+
+            tesoura -> {
+                configuraImagem(R.drawable.tesoura, imageView)
+            }
+
+            papel -> {
+                configuraImagem(R.drawable.papel, imageView)
+            }
         }
     }
 

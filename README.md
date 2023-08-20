@@ -11,6 +11,10 @@ Use Model-View-ViewModel (MVVM).
 
 ![.](imgs/screen.gif)
 
+### Android UI tests.
+
+![.](imgs/test.gif)
+
 ## Contributing
 
 Please read [Contributing](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
